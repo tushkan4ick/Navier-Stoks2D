@@ -1,0 +1,74 @@
+FoamFile
+{
+version         2.0;
+format         ascii;
+class         volScalarField;
+location         "1";
+object         du_dy;
+}
+//***************************************************
+dimensions                  [0 0 0 1 0 0 0 ];
+ internalField  nonuniform List<scalar>
+          21
+(
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+-nan(ind)
+)
+;
+boundaryField
+{
+AXIS
+{
+type         zeroGradient;
+}
+ 
+INLET
+{
+type         zeroGradient;
+}
+ 
+OUTLET
+{
+type         zeroGradient;
+}
+ 
+WALL
+{
+type         zeroGradient;
+}
+ 
+Interior_artificial_1
+{
+type         empty;
+}
+ 
+Interior_artificial_2
+{
+type         empty;
+}
+ 
+         defaultFaces
+         {
+                  type         empty;
+         }
+}
+//***************************************************
