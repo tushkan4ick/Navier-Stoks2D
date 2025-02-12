@@ -5,6 +5,7 @@ double sq(double a)
 	return a*a;
 }
 
+
 void Split(string str, string* (&parts), int n, int& i)
 {
 	//const int N = 256;      //Максимальная длина строки

@@ -28,6 +28,7 @@ void WriteResults(Mesh mesh, Gas* g)
 	int nCells = mesh.nCells;
 	double* f = new double[nCells];
 
+
 	// Temperature
 	units = "0 0 0 1 0 0 0 ";
 	par = "T";
