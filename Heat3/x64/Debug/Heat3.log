@@ -1,2 +1,6 @@
-﻿  Heat3.cpp
+﻿  Functions.cpp
+  Heat3.cpp
+  Mesh.cpp
+E:\code\Navier-Stoks2D\Mesh.cpp(991,7): warning C4101: f_vert: неиспользованная локальная переменная
+  Создание кода...
   Heat3.vcxproj -> E:\code\Navier-Stoks2D\x64\Debug\Heat3.exe

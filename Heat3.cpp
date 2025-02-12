@@ -390,6 +390,7 @@ int main()
                     if (stp_id == 2)    //static pressure and temperature fixed
                     {
 
+
                     }
 
 

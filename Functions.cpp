@@ -224,6 +224,7 @@ void CreateGas(Mesh mesh, Gas* (&gasb), Gas* (&g))
 
 	clock_t start_time = clock();
 
+
 	// Параметры на границах
 	auto nBounds = mesh.nBounds;
 	/*Gas* gasb = new Gas[nBounds];*/
