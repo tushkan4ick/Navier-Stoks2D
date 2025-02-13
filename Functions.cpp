@@ -382,6 +382,50 @@ void CreateGas(Mesh mesh, Gas* (&gasb), Gas* (&g))
 
 		}
 
+		if (mesh.bounds[b].tp_id == 5)		//subsonic outlet
+		{
+			//cout << "bc = " << bc << endl;
+			gasb[b].u = 0;
+			gasb[b].v = 0;
+			gasb[b].p = mesh.bounds[b].values[0];		//только для начальных условий
+			gasb[b].T = mesh.bounds[b].values[1];
+			//cout << "gasb[b].u= " << gasb[b].u << "; gasb[b].p= " << gasb[b].p << "; gasb[b].T= " << gasb[b].T << endl;
+
+
+			gasb[b].Cp = 1010.;
+			gasb[b].gam = 1.4;
+
+			gasb[b].mu = 4.e-5;
+			gasb[b].Pr = 0.7;
+
+			gasb[b].u_mag = sqrt(sq(gasb[b].u) + sq(gasb[b].v));
+
+			gasb[b].ro = gasb[b].p / (R * gasb[b].T);
+			gasb[b].e = gasb[b].Cp / gasb[b].gam * gasb[b].T;
+
+			gasb[b].h = gasb[b].Cp * gasb[b].T;
+
+			gasb[b].E = gasb[b].e + 0.5 * (sq(gasb[b].u) + sq(gasb[b].v));
+
+			//cout << b << "; gasb[b].u = " << gasb[b].u << "; gasb[b].p = " << gasb[b].p << "; gasb[b].T = " << gasb[b].T
+			//	<< "; gasb[b].ro = " << gasb[b].ro << "; gasb[b].e = " << gasb[b].e
+			//	<< "; gasb[b].E = " << gasb[b].E << endl;
+
+			gasb[b].U[0] = gasb[b].ro;
+			//cout << "gasb[b].U[0] = " << gasb[b].U[0] << endl;
+			gasb[b].U[1] = gasb[b].ro * gasb[b].u;
+			//cout << "gasb[b].U[1] = " << gasb[b].U[1] << endl;
+			gasb[b].U[2] = gasb[b].ro * gasb[b].v;
+			gasb[b].U[3] = gasb[b].ro * gasb[b].E;
+
+			for (int i = 0; i < 4; i++)
+			{
+				gasb[b].U1[i] = gasb[b].U[i];
+				gasb[b].dU[0] = 0;
+				//cout << "gasb[b].U1[i] = " << gasb[b].U1[i] << endl;
+			}
+		}
+
 	}
 
 	// Начальные параметры в ячейках
