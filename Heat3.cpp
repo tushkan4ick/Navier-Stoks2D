@@ -395,9 +395,49 @@ int main()
 
                 }
 
-                if (tp_id == 6)     //subsonic inlet
+                if (tp_id == 6)     //subsonic outlet
                 {
+                    int ir = mesh.faces[k].ir;
 
+                    double rob = gasb[b_id].ro;
+                    double ub = gasb[b_id].u;
+                    double vb = gasb[b_id].v;
+                    double pb = gasb[b_id].p;
+                    double Eb = gasb[b_id].E;
+                    double Tb = mesh.bounds[b_id].values[3];
+                    double ub_mag = gasb[b_id].u_mag;
+                    double ab = gasb[b_id].a;
+
+                    double roc = g[ir].ro;
+                    double pc = g[ir].p;
+                    double uc_mag = g[ir].u_mag;
+                    double ac = g[ir].a;
+
+                    double a = 0.5 * (ab + ac);
+                    double aro = 0.5 * (rob * ab + roc * ac);
+
+                    gasb[b_id].ro = g[ir].ro + (gasb[b_id].p - g[ir].p) / sq(a);
+                    gasb[b_id].u_mag = g[ir].u_mag - (gasb[b_id].p - g[ir].p) / aro;
+
+                    rob = gasb[b_id].ro;
+
+                    cout << "uc_mag= " << uc_mag << endl;
+
+                    double Hb = Eb + pb / rob;
+
+                    double un = ub * mesh.faces[k].nx + vb * mesh.faces[k].ny;
+
+                    double F[4];
+
+                    F[0] = rob * un;
+                    F[1] = rob * un * ub + pb * mesh.faces[k].nx;
+                    F[2] = rob * un * vb + pb * mesh.faces[k].ny;
+                    F[3] = rob * un * Hb;
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        g[ir].dU[i] += dt * mesh.faces[k].s / mesh.cells[ir].S * F[i];
+                    }
                 }
 
             }

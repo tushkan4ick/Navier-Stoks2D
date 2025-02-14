@@ -72,7 +72,7 @@ struct Gas
 	double p, T, e, h, p0;
 	double Cp, gam, a, alfa;
 
-	double jp, jm;
+	//double jp, jm;
 
 	double U[4], U1[4], dU[4];
 

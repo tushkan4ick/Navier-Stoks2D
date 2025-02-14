@@ -233,8 +233,6 @@ void CreateGas(Mesh mesh, Gas* (&gasb), Gas* (&g))
 
 	for (int b = 0; b < nBounds; b++)
 	{
-
-
 		//cout << "create bound fluid" << endl;
 
 		if (mesh.bounds[b].tp_id == 2)	// Supersonic Inlet
@@ -381,7 +379,6 @@ void CreateGas(Mesh mesh, Gas* (&gasb), Gas* (&g))
 			}
 
 		}
-
 	}
 
 	// Начальные параметры в ячейках
@@ -404,6 +401,57 @@ void CreateGas(Mesh mesh, Gas* (&gasb), Gas* (&g))
 		g[c] = gasb[bc];
 		//cout << "g[c] " << g[c].u << endl;
 	}
+
+	for (int b = 0; b < nBounds; b++)
+	{
+		if (mesh.bounds[b].tp_id == 6)		//subsonic outlet
+		{
+			//cout << "bc = " << bc << endl;
+			gasb[b].p = mesh.bounds[b].values[0];		
+			gasb[b].T = mesh.bounds[b].values[1];
+			//cout << "gasb[b].u= " << gasb[b].u << "; gasb[b].p= " << gasb[b].p << "; gasb[b].T= " << gasb[b].T << endl;
+
+
+			gasb[b].Cp = 1010.;
+			gasb[b].gam = 1.4;
+
+			gasb[b].mu = 4.e-5;
+			gasb[b].Pr = 0.7;
+			gasb[b].alfa = 0.;
+
+			gasb[b].a = sqrt(gasb[b].gam * R * gasb[b].T);
+			gasb[b].ro = gasb[bc].ro + (gasb[b].p - gasb[bc].p) / sq(gasb[b].a);
+			gasb[b].u_mag = gasb[bc].u_mag - (gasb[b].p - gasb[bc].p) / gasb[b].ro / gasb[b].a;
+			gasb[b].v = 0.;
+			gasb[b].u = sqrt(gasb[b].u_mag);
+
+			//gasb[b].ro = gasb[b].p / (R * gasb[b].T);
+			gasb[b].e = gasb[b].Cp / gasb[b].gam * gasb[b].T;
+
+			gasb[b].h = gasb[b].Cp * gasb[b].T;
+
+			gasb[b].E = gasb[b].e + 0.5 * (sq(gasb[b].u) + sq(gasb[b].v));
+
+			//cout << b << "; gasb[b].u = " << gasb[b].u << "; gasb[b].p = " << gasb[b].p << "; gasb[b].T = " << gasb[b].T
+			//	<< "; gasb[b].ro = " << gasb[b].ro << "; gasb[b].e = " << gasb[b].e
+			//	<< "; gasb[b].E = " << gasb[b].E << endl;
+
+			gasb[b].U[0] = gasb[b].ro;
+			//cout << "gasb[b].U[0] = " << gasb[b].U[0] << endl;
+			gasb[b].U[1] = gasb[b].ro * gasb[b].u;
+			//cout << "gasb[b].U[1] = " << gasb[b].U[1] << endl;
+			gasb[b].U[2] = gasb[b].ro * gasb[b].v;
+			gasb[b].U[3] = gasb[b].ro * gasb[b].E;
+
+			for (int i = 0; i < 4; i++)
+			{
+				gasb[b].U1[i] = gasb[b].U[i];
+				gasb[b].dU[0] = 0;
+				//cout << "gasb[b].U1[i] = " << gasb[b].U1[i] << endl;
+			}
+		}
+	}
+
 
 	clock_t end_time = clock();
 	double seconds = (double)(end_time - start_time) / CLOCKS_PER_SEC;
