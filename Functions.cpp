@@ -233,8 +233,6 @@ void CreateGas(Mesh mesh, Gas* (&gasb), Gas* (&g))
 
 	for (int b = 0; b < nBounds; b++)
 	{
-
-
 		//cout << "create bound fluid" << endl;
 
 		if (mesh.bounds[b].tp_id == 2)	// Supersonic Inlet
@@ -381,13 +379,35 @@ void CreateGas(Mesh mesh, Gas* (&gasb), Gas* (&g))
 			}
 
 		}
+	}
 
-		if (mesh.bounds[b].tp_id == 5)		//subsonic outlet
+	// Начальные параметры в ячейках
+	auto nCells = mesh.nCells;
+	//Граница, по которой задаются начальные условия
+	//int b = 0;   // "rect3.msh"; "Head41.msh";
+	//int b = 0;
+	//int b = bc;
+
+	cout << "b = " << bc << endl;
+
+	for (int c = 0; c < nCells; c++)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			g[c].U[i] = gasb[bc].U1[i];
+			//cout << "g[c].U[i] = " << g[c].U[i] << endl;
+		}
+
+		g[c] = gasb[bc];
+		//cout << "g[c] " << g[c].u << endl;
+	}
+
+	for (int b = 0; b < nBounds; b++)
+	{
+		if (mesh.bounds[b].tp_id == 6)		//subsonic outlet
 		{
 			//cout << "bc = " << bc << endl;
-			gasb[b].u = 0;
-			gasb[b].v = 0;
-			gasb[b].p = mesh.bounds[b].values[0];		//только для начальных условий
+			gasb[b].p = mesh.bounds[b].values[0];		
 			gasb[b].T = mesh.bounds[b].values[1];
 			//cout << "gasb[b].u= " << gasb[b].u << "; gasb[b].p= " << gasb[b].p << "; gasb[b].T= " << gasb[b].T << endl;
 
@@ -397,10 +417,15 @@ void CreateGas(Mesh mesh, Gas* (&gasb), Gas* (&g))
 
 			gasb[b].mu = 4.e-5;
 			gasb[b].Pr = 0.7;
+			gasb[b].alfa = 0.;
 
-			gasb[b].u_mag = sqrt(sq(gasb[b].u) + sq(gasb[b].v));
+			gasb[b].a = sqrt(gasb[b].gam * R * gasb[b].T);
+			gasb[b].ro = gasb[bc].ro + (gasb[b].p - gasb[bc].p) / sq(gasb[b].a);
+			gasb[b].u_mag = gasb[bc].u_mag - (gasb[b].p - gasb[bc].p) / gasb[b].ro / gasb[b].a;
+			gasb[b].v = 0.;
+			gasb[b].u = sqrt(gasb[b].u_mag);
 
-			gasb[b].ro = gasb[b].p / (R * gasb[b].T);
+			//gasb[b].ro = gasb[b].p / (R * gasb[b].T);
 			gasb[b].e = gasb[b].Cp / gasb[b].gam * gasb[b].T;
 
 			gasb[b].h = gasb[b].Cp * gasb[b].T;
@@ -425,29 +450,8 @@ void CreateGas(Mesh mesh, Gas* (&gasb), Gas* (&g))
 				//cout << "gasb[b].U1[i] = " << gasb[b].U1[i] << endl;
 			}
 		}
-
 	}
 
-	// Начальные параметры в ячейках
-	auto nCells = mesh.nCells;
-	//Граница, по которой задаются начальные условия
-	//int b = 0;   // "rect3.msh"; "Head41.msh";
-	//int b = 0;
-	//int b = bc;
-
-	cout << "b = " << bc << endl;
-
-	for (int c = 0; c < nCells; c++)
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			g[c].U[i] = gasb[bc].U1[i];
-			//cout << "g[c].U[i] = " << g[c].U[i] << endl;
-		}
-
-		g[c] = gasb[bc];
-		//cout << "g[c] " << g[c].u << endl;
-	}
 
 	clock_t end_time = clock();
 	double seconds = (double)(end_time - start_time) / CLOCKS_PER_SEC;
