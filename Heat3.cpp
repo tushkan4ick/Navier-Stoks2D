@@ -14,12 +14,13 @@ int main()
     //file = "ICM_test.msh";
     //file = "FFF.1.msh";
     //file = "nozzleRect1.msh";
-    file = "sphere.msh";
+    //file = "sphere.msh";
     //file = "rect3.msh";
     //file = "Head41.msh";
     //file = "SYS-1.1.msh";
     //file = "Andr.msh";
     //file = "exhaust.msh";
+    file = "cyl_kar.msh";
 
     cout << "MeshFile:\t" << file << endl;
     
@@ -367,7 +368,7 @@ int main()
                         pb = gasb[b_id].p;
                         rob = gasb[b_id].ro;
 
-                        cout << "uc_mag= " << uc_mag << endl;
+                        cout << "in U = " << ub_mag << endl;
 
                         double Hb = Eb + pb / rob;
 
@@ -421,7 +422,7 @@ int main()
 
                     rob = gasb[b_id].ro;
 
-                    cout << "uc_mag= " << uc_mag << endl;
+                    cout << "out U = " << ub << endl;
 
                     double Hb = Eb + pb / rob;
 
