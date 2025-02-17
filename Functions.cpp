@@ -422,8 +422,11 @@ void CreateGas(Mesh mesh, Gas* (&gasb), Gas* (&g))
 			gasb[b].a = sqrt(gasb[b].gam * R * gasb[b].T);
 			gasb[b].ro = gasb[bc].ro + (gasb[b].p - gasb[bc].p) / sq(gasb[b].a);
 			gasb[b].u_mag = gasb[bc].u_mag - (gasb[b].p - gasb[bc].p) / gasb[b].ro / gasb[b].a;
+
+			//cout << "u_mag= " << gasb[b].u_mag << " a= " << gasb[b].a << " ro= " << gasb[b].ro << endl;
+
 			gasb[b].v = 0.;
-			gasb[b].u = sqrt(gasb[b].u_mag);
+			gasb[b].u = gasb[b].u_mag;
 
 			//gasb[b].ro = gasb[b].p / (R * gasb[b].T);
 			gasb[b].e = gasb[b].Cp / gasb[b].gam * gasb[b].T;

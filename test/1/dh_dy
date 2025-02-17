@@ -30,8 +30,8 @@ dimensions                  [0 0 0 1 0 0 0 ];
 -nan(ind)
 -nan(ind)
 -nan(ind)
-1.0757e+64
-2.98695e+63
+-nan(ind)
+-nan(ind)
 )
 ;
 boundaryField

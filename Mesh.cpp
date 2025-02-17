@@ -498,13 +498,16 @@ void Mesh::ReadBounds()
 		for (int i = 0; i < nBounds; i++)
 		{
 			reading >> bounds[i].zone_id >> bounds[i].tp_id;
+
+			cout << "zone_id= " << bounds[i].zone_id << endl;
+
 			reading >> bounds[i].stp_id >> bounds[i].nVals;
-			if (bounds[i].nVals > 0) {
+			if (bounds[i].nVals > 0)
+			{
 				bounds[i].values = new double[bounds[i].nVals];
 
 				for (int j = 0; j < bounds[i].nVals; j++)
 					reading >> bounds[i].values[j];
-
 
 			}
 			reading >> com;
@@ -522,7 +525,7 @@ void Mesh::ReadBounds()
 			}
 		}
 
-
+		exit(10000);
 
 		for (int m = 0; m < nZones; m++)
 			cout << m << " zones[m].name= " << zones[m].zone_name
